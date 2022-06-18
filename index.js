@@ -1,6 +1,12 @@
 /*** Flesh and Blood AI ***/
 console.log("Flesh and Blood AI");
 
+/* Card zones */
+let hand = [];
+let pitchPile = [];
+let discardPile = [];
+let banishPile = [];
+let attackChain = [];
 let deck = [
     {
         title: "Arrow 1 - Red",
@@ -101,12 +107,7 @@ function drawCardFromDeck() {
     return deck[randomCard];
 }
 
-/* hand array holds the cards in hand */
-let hand = [];
-let pitchPile = [];
-let discardPile = [];
-let banishPile = [];
-let attachChain = [];
+
 
 /* Draw hand */
 function drawHand() {
