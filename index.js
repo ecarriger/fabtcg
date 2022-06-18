@@ -100,6 +100,14 @@ const deck = [
     }
 ];
 
+/* Play order options */
+function PlayOption(totalDamage, cardsPlayed, cardsPitched, cardsLeftOver) {
+    this.totalDamage = totalDamage;
+    this.cardsPlayed = cardsPlayed;
+    this.cardsPitched = cardsPitched;
+    this.cardsLeftOver = cardsLeftOver;
+}
+
 /* Returns a random card from deck */
 function drawCardFromDeck() {
     let randomCard;
@@ -132,17 +140,20 @@ function pitchCard(pitchNeeded, handArray, pitchCardIndex) {
     }
 }
 
-function calculateMaxDmg() {
-    /* Loop through playing each card in hand first*/
-    hand.forEach(card, index, array => {
-        /* Remove played card from hand */
-        array.splice(index, 1);
-        let pitchNeeded = card.cardCost;
-        /*Loop through paying for card options */
-        hand.forEach(card, index, array => {
-            array.splice(index, 1);
-            pitchNeeded -= card.pitch;
-        })
+function calculatePlayOptions(hand) {
+    let ap = 1;
+    const playOptions = [];
 
-    })
+    while(ap > 0) {
+        /* Loop through playing each card in hand first*/
+        hand.forEach(card, index, array => {
+            const tempCardsPlayed = [card];
+            /*Loop through paying for card options */
+            hand.forEach(card, index, array => {
+                
+            })
+
+        })
+    }
 }
+
