@@ -2,12 +2,12 @@
 console.log("Flesh and Blood AI");
 
 /* Card zones */
-let hand = [];
-let pitchPile = [];
-let discardPile = [];
-let banishPile = [];
-let attackChain = [];
-let deck = [
+const hand = [];
+const pitchPile = [];
+const discardPile = [];
+const banishPile = [];
+const attackChain = [];
+const deck = [
     {
         title: "Arrow 1 - Red",
         pitch: 1,
@@ -120,8 +120,16 @@ drawHand();
 /* Show hand */
 hand.forEach(card => console.log(card.title));
 
-function payForCard(cardCost, cardInHand) {
-
+/* Pitch card from hand to pitch pile. Returns pitch value gained*/
+function pitchCard(pitchNeeded, handArray, pitchCardIndex) {
+    if(pitchNeeded > 0) {
+        const pitchValue = handArray[pitchCardIndex].pitch;
+        pitchPile.push(handArray[pitchCardIndex])
+        handArray.splice(pitchCardIndex, 1);
+        return pitchValue;
+    } else {
+        console.log("Cannot pitch card if pitch still needed is 0");
+    }
 }
 
 function calculateMaxDmg() {
