@@ -103,6 +103,10 @@ function drawCardFromDeck() {
 
 /* hand array holds the cards in hand */
 let hand = [];
+let pitchPile = [];
+let discardPile = [];
+let banishPile = [];
+let attachChain = [];
 
 /* Draw hand */
 function drawHand() {
