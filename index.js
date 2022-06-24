@@ -134,7 +134,7 @@ function pitchCard(handArray, pitchCardIndex) {
     handArray.splice(pitchCardIndex, 1);
 }
 function discardCard(cardArray, discardCardIndex) {
-    pitchPile.push(cardArray[discardCardIndex])
+    discardPile.push(cardArray[discardCardIndex])
     cardArray.splice(discardCardIndex, 1);
 }
 
