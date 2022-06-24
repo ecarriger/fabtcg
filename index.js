@@ -129,31 +129,32 @@ drawHand();
 hand.forEach(card => console.log(card.title));
 
 /* Pitch card from hand to pitch pile. Returns pitch value gained*/
-function pitchCard(pitchNeeded, handArray, pitchCardIndex) {
-    if(pitchNeeded > 0) {
-        const pitchValue = handArray[pitchCardIndex].pitch;
-        pitchPile.push(handArray[pitchCardIndex])
-        handArray.splice(pitchCardIndex, 1);
-        return pitchValue;
-    } else {
-        console.log("Cannot pitch card if pitch still needed is 0");
-    }
+function pitchCard(handArray, pitchCardIndex) {
+    pitchPile.push(handArray[pitchCardIndex])
+    handArray.splice(pitchCardIndex, 1);
+}
+function discardCard(cardArray, discardCardIndex) {
+    pitchPile.push(cardArray[discardCardIndex])
+    cardArray.splice(discardCardIndex, 1);
 }
 
 function calculatePlayOptions(hand) {
     let ap = 1;
     const playOptions = [];
 
-    while(ap > 0) {
-        /* Loop through playing each card in hand first*/
+    /* Loop through playing each card in hand first*/
+    hand.forEach(card, index, array => {
+        let cardDmg = card.attack;
+        let pitchNeeded = card.cost;
+        /*Loop through paying for card options */
         hand.forEach(card, index, array => {
-            const tempCardsPlayed = [card];
-            /*Loop through paying for card options */
-            hand.forEach(card, index, array => {
-                
-            })
+            if(card.pitch >= pitchNeeded) {
+                pitchCard(hand, index);
 
+            }
         })
-    }
+        const tempCardsPlayed = [card];
+    })
+
 }
 
