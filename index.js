@@ -129,13 +129,18 @@ drawHand();
 hand.forEach(card => console.log(card.title));
 
 /* Pitch card from hand to pitch pile. Returns pitch value gained*/
-function pitchCard(handArray, pitchCardIndex) {
-    pitchPile.push(handArray[pitchCardIndex])
+function pitchCard(handArray, pitchCardIndex, pile) {
+    pile.push(handArray[pitchCardIndex])
     handArray.splice(pitchCardIndex, 1);
 }
-function discardCard(cardArray, discardCardIndex) {
-    discardPile.push(cardArray[discardCardIndex])
+function discardCard(cardArray, discardCardIndex, pile) {
+    pile.push(cardArray[discardCardIndex])
     cardArray.splice(discardCardIndex, 1);
+}
+function calculateDamage(cardArray) {
+    let totalDamage = 0;
+    cardArray.forEach(card => totalDamage += card.attack);
+    return totalDamage;
 }
 
 function calculatePlayOptions(hand) {
@@ -143,18 +148,30 @@ function calculatePlayOptions(hand) {
     const playOptions = [];
 
     /* Loop through playing each card in hand first*/
-    hand.forEach(card, index, array => {
-        let cardDmg = card.attack;
+    hand.forEach((card, index, array) => {
+        const workingPitchPile = [];
+        const workingDiscardPile = [];
+        /*const banishPile = []; */
+        /*const attackChain = [];*/
+        let workingHand = array;
+        let workingCard = card;
+        let workingCardIndex = index;
         let pitchNeeded = card.cost;
         /*Loop through paying for card options */
-        hand.forEach(card, index, array => {
+        workingHand.forEach((card, index, array) => {
             if(card.pitch >= pitchNeeded) {
-                pitchCard(hand, index);
-
+                pitchCard(array, index, workingPitchPile);
+                discardCard(array, workingCardIndex, workingDiscardPile);
+                totalDamage = calculateDamage(workingDiscardPile);
+                workingplayOption = PlayOption(totalDamage, workingDiscardPile, workingPitchPile, workingHand);
+                console.log(workingplayOption.totalDamage);
+                playOptions.push(workingplayOption);
+                console.log("Adding option");
             }
         })
-        const tempCardsPlayed = [card];
+        
     })
-
+    playOptions.forEach(option => console.log(option.totalDamage));
 }
+calculatePlayOptions(hand);
 
