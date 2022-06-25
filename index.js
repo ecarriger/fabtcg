@@ -162,10 +162,11 @@ function calculatePlayOptions(hand) {
             if(card.pitch >= pitchNeeded) {
                 pitchCard(array, index, workingPitchPile);
                 discardCard(array, workingCardIndex, workingDiscardPile);
-                totalDamage = calculateDamage(workingDiscardPile);
-                workingplayOption = PlayOption(totalDamage, workingDiscardPile, workingPitchPile, workingHand);
-                console.log(workingplayOption.totalDamage);
-                playOptions.push(workingplayOption);
+                const totalDamage = calculateDamage(workingDiscardPile);
+                console.log(totalDamage);
+                const workingPlayOption = new PlayOption(totalDamage, workingDiscardPile, workingPitchPile, workingHand);
+                console.log(workingPlayOption.totalDamage);
+                playOptions.push(workingPlayOption);
                 console.log("Adding option");
             }
         })
