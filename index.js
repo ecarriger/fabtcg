@@ -101,8 +101,8 @@ const deck = [
 ];
 
 /* Play order options */
-function PlayOption(totalDamage, cardsPlayed, cardsPitched, cardsLeftOver) {
-    this.totalDamage = totalDamage;
+function PlayOption(/*totalDamage,*/ cardsPlayed, cardsPitched, cardsLeftOver) {
+//    this.totalDamage = totalDamage;
     this.cardsPlayed = cardsPlayed;
     this.cardsPitched = cardsPitched;
     this.cardsLeftOver = cardsLeftOver;
@@ -129,14 +129,11 @@ drawHand();
 hand.forEach(card => console.log(card.title));
 
 /* Pitch card from hand to pitch pile. Returns pitch value gained*/
-function pitchCard(handArray, pitchCardIndex, pile) {
+function moveCardHandToPile(handArray, pitchCardIndex, pile) {
     pile.push(handArray[pitchCardIndex])
     handArray.splice(pitchCardIndex, 1);
 }
-function discardCard(cardArray, discardCardIndex, pile) {
-    pile.push(cardArray[discardCardIndex])
-    cardArray.splice(discardCardIndex, 1);
-}
+
 function calculateDamage(cardArray) {
     let totalDamage = 0;
     cardArray.forEach(card => totalDamage += card.attack);
@@ -145,61 +142,61 @@ function calculateDamage(cardArray) {
 
 function calculatePlayOptions(hand) {
     const playOptions = [];
+    
+    hand.forEach((cardL1, index, array) => {
+        const handL1 = [...array];
+        const discardPileL1 = [];
+        moveCardHandToPile(handL1, index, discardPileL1);
 
-    hand.forEach((card, index, array) => {
-        const cardOptions = [];
-        const discardPile = [];
-        const workingHand = [...array];
-        discardCard(workingHand, index, discardPile);
-        
-        workingHand.forEach((card, index, array) => {
-            const pitchOptions = [];
-            const pitchPile = [];
-            const workingArray = [...array];
-            pitchCard(workingArray, index, pitchPile);
-
-            
-
-            pitchOptions(option => cardOptions.push(option));
+        handL1.forEach((cardL2, index, array) => {
+            const handL2 = [...array];
+            const pitchPileL2 = [];
+            moveCardHandToPile(handL2, index, pitchPileL2);
+            const playOption = new PlayOption(discardPileL1, pitchPileL2, handL2);
+            playOptions.push(playOption);
         })
-
-        cardOptions.forEach(option => playOptions.push(option));
     })
 
-    return  playOptions;
+    return playOptions;
 }
 
-/*function calculatePlayOptions(hand) {
-    let ap = 1;
-    const playOptions = [];
+// function calculatePlayOptions(hand) {
+//     let ap = 1;
+//     const playOptions = [];
 
-    /* Loop through playing each card in hand first*/
-    hand.forEach((card, index, array) => {
-        /*const banishPile = []; */
-        /*const attackChain = [];*/
-        let workingHand = [...array];
-        let workingCard = card;
-        let workingCardIndex = index;
-        let pitchNeeded = card.cost;
-        /*Loop through paying for card options */
-        workingHand.forEach((card, index, array) => {
-            const workingPitchPile = [];
-            const workingDiscardPile = [];
-            let workingHand = [...array];
-            if(card.pitch >= pitchNeeded) {
-                pitchCard(array, index, workingPitchPile);
-                discardCard(array, workingCardIndex, workingDiscardPile);
-                const totalDamage = calculateDamage(workingDiscardPile);
-                const workingPlayOption = new PlayOption(totalDamage, workingDiscardPile, workingPitchPile, workingHand);
-                playOptions.push(workingPlayOption);
-                console.log("Adding option");
-            } else {
-                console.log("Not enough pitch");
-            }
-        })
+//     /* Loop through playing each card in hand first*/
+//     hand.forEach((card, index, array) => {
+//         /*const banishPile = []; */
+//         /*const attackChain = [];*/
+//         let workingHand = [...array];
+//         let workingCard = card;
+//         let workingCardIndex = index;
+//         let pitchNeeded = card.cost;
+//         /*Loop through paying for card options */
+//         workingHand.forEach((card, index, array) => {
+//             const workingPitchPile = [];
+//             const workingDiscardPile = [];
+//             let workingHand = [...array];
+//             if(card.pitch >= pitchNeeded) {
+//                 pitchCard(array, index, workingPitchPile);
+//                 discardCard(array, workingCardIndex, workingDiscardPile);
+//                 const totalDamage = calculateDamage(workingDiscardPile);
+//                 const workingPlayOption = new PlayOption(totalDamage, workingDiscardPile, workingPitchPile, workingHand);
+//                 playOptions.push(workingPlayOption);
+//                 console.log("Adding option");
+//             } else {
+//                 console.log("Not enough pitch");
+//             }
+//         })
         
-    })
-    playOptions.forEach(option => console.log(option.totalDamage));
-}*/
-calculatePlayOptions(hand);
+//     })
+//     playOptions.forEach(option => console.log(option.totalDamage));
+// }
+let allPlayOptions = calculatePlayOptions(hand);
+function calcOptionDmg(option) {
+    let totalDamage = 0;
+    option.cardsPlayed.forEach(card => totalDamage += card.attack);
+    return totalDamage;
+}
+allPlayOptions.forEach(option => console.log(calcOptionDmg(option)));
 
